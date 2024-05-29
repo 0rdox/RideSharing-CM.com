@@ -1,0 +1,43 @@
+<div *ngIf="car" class="p-5">
+  <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div class="bg-gray-100 rounded content-stretch relative">
+      <img [src]="car.imageUrl" alt="Foto van de bedrijfsauto" class="w-full rounded-xl object-cover h-60 w-full" />
+    </div>
+
+    <div class="col-span-2">
+      <div class="bg-white shadow-md rounded p-6 pt-1 m-1 relative">
+        <div class="carinfo flex flex-col">
+          <span class="car-brand">{{ car.brand }} {{ car.model }}</span>
+          <div class="absolute top-0 right-0 p-3">
+            <span
+              class="bg-blue-600 border-2 border-black border-r-0 text-xs px-1.5 py-0.5 rounded-l pre-licenseplate"></span>
+            <span
+              class="bg-yellow-300 border-2 border-black border-l-0 text-black text-xs font-bold uppercase me-2 px-2.5 py-0.5 rounded-r">
+              {{ car.licensePlate }}
+            </span>
+          </div>
+          <div>
+            <p>{{car.location}}</p>
+
+            <p>{{car.seats}} seats</p>
+
+
+
+          </div>
+          <div *ngIf="isAdmin" class="rounded-lg text-left space-x-3">
+            <button routerLink="/cars/{{ car.id }}/edit" class="bg-blue-600 text-white px-6 py-2 mt-4 rounded-md transition duration-300 transform hover:scale-105">
+              Edit
+            </button>
+            <button class="bg-red-600 text-white px-4 py-2 mt-4 rounded-md transition duration-300 transform hover:scale-105" (click)="confirmDelete()">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <app-car-calender [car]="car"></app-car-calender>
+  </div>
+</div>

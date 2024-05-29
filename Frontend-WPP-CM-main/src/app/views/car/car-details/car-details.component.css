@@ -1,0 +1,17 @@
+.car-brand, .error-message{
+    font-size: 24px;
+}
+
+.pre-licenseplate{
+    color: rgba(255, 255, 255, 0);
+}
+
+.pre-licenseplate::selection{
+    background-color: rgba(255, 255, 255, 0);
+    color: rgba(255, 255, 255, 0);
+    cursor: default;
+}
+
+.pre-licenseplate:hover{
+    cursor: default;
+}

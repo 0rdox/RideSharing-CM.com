@@ -1,0 +1,138 @@
+<div class="lg:flex items-center justify-center lg:ml-80 lg:mr-80 lg:(m-80 mt-10 mb-20)">
+    <div class="w-full max-w-md">
+        <form #form="ngForm" class="bg-white shadow-md rounded-xl px-8 pt-6 pb-8 mb-10">
+            <p *ngIf="!isEditing" class="text-center text-2xl font-bold m-4">Create a Car</p>
+            <p *ngIf="isEditing" class="text-center text-2xl font-bold m-4">Edit a Car</p>
+            <hr class="mb-4">
+
+            <div class="lg:flex lg:space-x-3">
+                <div class="mb-4 w-full">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="brand">
+                        Brand
+                    </label>
+                    <input [(ngModel)]="brand" #brandField="ngModel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                focus:outline-none focus:shadow-outline" id="brand" name="brand" type="text" placeholder="Volkswagen"
+                        required />
+                    <div *ngIf="brandField.invalid && (brandField.dirty || brandField.touched)"
+                        class="text-red-500 text-xs">
+                        <span class="mt-1" *ngIf="brandField.errors && brandField.errors['required']">Brand is
+                            required.</span>
+                    </div>
+                </div>
+
+
+                <div class="mb-4 w-full">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="model">
+                        Model
+                    </label>
+                    <input [(ngModel)]="model" #modelField="ngModel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                focus:outline-none focus:shadow-outline" id="model" name="model" type="text" placeholder="Polo"
+                        required />
+                    <div *ngIf="modelField.invalid && (modelField.dirty || modelField.touched)"
+                        class="text-red-500 text-xs">
+                        <span class="mt-1" *ngIf="modelField.errors && modelField.errors['required']">Model is
+                            required.</span>
+                    </div>
+                </div>
+
+                <div class="mb-4 lg:w-15">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="seats">
+                        Seats
+                    </label>
+                    <input [(ngModel)]="seats" #seatsField="ngModel" class="shadow appearance-none border rounded w-14 py-2 px-3 text-gray-700 leading-tight
+                    focus:outline-none focus:shadow-outline" id="seats" name="seats" type="number" required min="0"
+                        max="10" />
+
+
+                    <div *ngIf="seatsField.dirty || seatsField.touched" class="text-red-500 text-xs">
+                        <div *ngIf="seatsField.invalid && (seatsField.dirty || seatsField.touched)"
+                            class="text-red-500 text-xs">
+                            <span class="mt-1" *ngIf="seatsField.errors && seatsField.errors['required']">Seats is
+                                required.</span>
+                            <span class="mt-1"
+                                *ngIf="seatsField.errors && (seatsField.errors['min'] || seatsField.errors['max'])">Seats
+                                is invalid.</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="lg:flex lg:space-x-3">
+                <div class="mb-4 w-full">
+                    <label class="block text-gray-700 w-full text-sm font-bold mb-2" for="license">
+                        License Plate
+                    </label>
+                    <input [(ngModel)]="license" #licenseField="ngModel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                focus:outline-none focus:shadow-outline" id="license" name="license" type="text" placeholder="FB-12-34"
+                        required />
+                    <div *ngIf="licenseField.dirty || licenseField.touched" class="text-red-500 text-xs">
+                        <span class="mt-1" *ngIf="licenseField.errors && licenseField.errors['required']">License is
+                            required.</span>
+                    </div>
+                    <div class="text-red-500 text-xs">
+                        <span class="mt-1" *ngIf="errorMessage">{{ errorMessage }}</span>
+                    </div>
+                </div>
+                <div class="mb-4 lg:w-60">
+                    <label class="block text-gray-700 text-sm w-full font-bold mb-2" for="location">
+                        Location
+                    </label>
+                    <select [(ngModel)]="location" required #locationField="ngModel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                    focus:outline-none focus:shadow-outline" id="location" name="location" type="text"
+                        placeholder="Car Location">
+                        <option value="undefined" disabled selected>...</option>
+                        <option *ngFor="let destination of destinations" [value]="destination">{{ destination }}
+                        </option>
+                    </select>
+                    <div *ngIf="locationField.dirty || locationField.touched" class="text-red-500 text-xs">
+                        <span class="mt-1" *ngIf="location === 'undefined'">Location is required.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="image">
+                    Image URL
+                </label>
+                <input [(ngModel)]="imageUrl" #imageField="ngModel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+            focus:outline-none focus:shadow-outline" id="image" name="image" type="text" placeholder="URL" required />
+                <div *ngIf="imageField.invalid && (imageField.dirty || imageField.touched)"
+                    class="text-red-500 text-xs">
+                    <span class="mt-1" *ngIf="imageField.errors && imageField.errors['required']">Image is
+                        required.</span>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <span class="block text-gray-700 text-sm font-bold">Is The Car Available?</span>
+                <label class="relative inline-flex items-center cursor-pointer mt-2">
+                    <input type="checkbox" [(ngModel)]="isAvailable" class="sr-only peer" id="isAvailable"
+                        name="isAvailable">
+                    <div
+                        class="w-11 h-6 bg-gray-200 rounded-full dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                    </div>
+                </label>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button [disabled]="form.invalid  || location==='undefined'" [class.bg-blue-500]="!form.invalid"
+                    [class.bg-gray-500]="form.invalid  || location==='undefined'"
+                    [class.hover:bg-gray-500]="form.invalid  || location==='undefined'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none
+                    focus:shadow-outline" type="button" (click)="saveCar()">
+                    Save
+                </button>
+                <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+                    routerLink="/cars">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="lg:ml-4" [ngClass]="{'border-0 border-black h-50': imageUrl !== ''}">
+        <img class="object-cover h-60 rounded-xl" src="{{ imageUrl }}">
+    </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="flex flex-col">
+    <!-- Main Content Area -->
+  
+    <main class="flex flex-col lg:flex-row gap-10 p-4 lg:p-8 mt-7">
+      <!-- Reservations Box -->
+      <div class="w-full lg:w-1/3 flex flex-col mx-auto">
+        <div class="border-2 rounded-xl p-4 bg-white overflow-y-auto max-h-[600px]">
+          <h3 class="text-xl font-semibold mb-4 lg:mb-4">Your Past Reservations</h3>
+          <ul class="divide-x divide-gray-300">
+            <div *ngFor="let reservation of historyReservations">
+                <div class="p-4 bg-white-100 border-2 shadow-md rounded-md mb-4">
+                  <div class="bg-white-100 relative">
+                    <div class="absolute top-0 right-0">
+                      <span class="bg-blue-600 border-2 border-black border-r-0 text-xs px-1.5 py-0.5 rounded-l">
+                      </span>
+                      <span
+                        class="bg-yellow-300 border-2 border-black border-l-0 text-black text-xs font-bold uppercase px-2.5 py-0.5 rounded-r">{{
+                        reservation.car.licensePlate }}</span>
+                    </div>
+                  </div>
+  
+                  <h2 class="font-bold">{{ reservation?.destination }}</h2>
+                  <h2>Seats: {{reservation?.seats}} </h2>
+  
+                  <h2>
+                    Departure: {{ reservation?.departureDate | date : "dd-MM-YYYY HH:mm" }} 
+                  </h2>
+                  <h2>
+                    Return by: {{ reservation?.arrivalDate | date : "dd-MM-YYYY HH:mm" }}
+                  </h2>
+  
+                  <hr class="my-2 border-gray-300" />
+                  
+  
+                </div>
+            </div>
+          </ul>
+          <ul *ngIf="historyReservations?.length === 0">
+            <li>No reservations found.</li>
+          </ul>
+        </div>
+      </div>
+  
+    </main>
+  </div>

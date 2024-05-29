@@ -1,0 +1,26 @@
+<div class="bg-white shadow-md rounded p-6 pt-1 lg:ml-80 lg:mr-80 lg:(m-80 mt-20 mb-20)">
+  <div class="mt-6 lg:relative flex justify-center">
+    <div class="lg:absolute lg:top-0 lg:right-0 rounded-full px-3 py-1 text-sm font-semibold text-white {{
+        user?.hasLicense ? 'bg-blue-600' : 'bg-red-600'
+      }}">
+      {{ user?.hasLicense ? "Has a License" : "Doesn't Have a License" }}
+    </div>
+  </div>
+
+  <div class="flex items-center">
+    <i class="fa-solid fa-user w-16 h-16 rounded-full p-3 text-5xl"></i>
+    <div class="ml-4">
+      <h2 class="name text-2xl font-bold">
+        {{ user?.name }} [{{ user?.employeeNr }}]
+      </h2>
+      <p class="email text-gray-500">{{ user?.emailAddress }}</p>
+    </div>
+  </div>
+
+
+  <div class="rounded-lg text-center">
+    <button (click)="signOut()" class="bg-red-600 text-white px-4 py-2 mt-4 rounded-md  transition duration-300 transform hover:scale-105">
+      Sign Out
+    </button>
+  </div>
+</div>

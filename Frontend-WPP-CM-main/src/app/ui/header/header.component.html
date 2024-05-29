@@ -1,0 +1,81 @@
+<header>
+  <nav class="bg-white border-gray-200 lg:px-3 py-3 dark:bg-white-800 shadow-md">
+    <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen">
+      <a routerLink="home" class="flex items-center">
+        <img src="./assets/images/CMCarManagement.png" class="ml-3 h-14 lg:ml-0" alt="CM Logo" />
+        <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
+          style="font-family: 'Nunito', sans-serif"></span>
+      </a>
+
+      <div
+        class="hidden justify-between items-center w-full md:flex md:w-auto md:order-1 lg:flex lg:w-auto lg:order-1 md:hidden"
+        id="mobile-menu-2">
+        <ul *ngIf="isLoggedIn" class="flex flex-col mt-4 font-montserrat lg:flex-row lg:space-x-0 lg:mt-0">
+          <li>
+            <a routerLink="/dashboard" routerLinkActive="active-link"
+              class="text-gray-800 hover:bg-blue-50 focus:ring-2 focus:ring-gray-300 rounded-lg text-md px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:text-blue-700 focus:outline-none cursor-pointer">Dashboard</a>
+          </li>
+
+          <li>
+            <a routerLink="/cars" routerLinkActive="active-link"
+              class="hover:bg-blue-50 focus:ring-2 focus:ring-gray-300 rounded-lg text-md px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:text-blue-700 focus:outline-none text-gray-800 cursor-pointer">Cars</a>
+          </li>
+          <li *ngIf="isAdmin">
+            <a routerLink="/users/list" routerLinkActive="active-link"
+              class="hover:bg-blue-50 focus:ring-2 focus:ring-gray-300 rounded-lg text-md px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:text-blue-700 focus:outline-none text-gray-800 cursor-pointer">Users</a>
+          </li>
+          <li>
+            <a routerLink="/history" routerLinkActive="active-link"
+              class="text-gray-800 hover:bg-blue-50 focus:ring-2 focus:ring-gray-300 rounded-lg text-md px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:text-blue-700 focus:outline-none cursor-pointer">History</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="flex items-center font-montserrat lg:text-lg lg:order-2">
+        <ng-container *ngIf="isLoggedIn">
+          <i routerLink="users/profile"
+            class="fa-solid fa-user text-black-800 cursor-pointer dark:text-black hover:bg-blue-50 focus:ring-2 focus:ring-gray-300 rounded-lg px-5 py-4 mr-2 dark:hover:text-blue-700 focus:outline-none"
+            style="font-size: 24px"></i>
+        </ng-container>
+        <button data-collapse-toggle="navbar-dropdown" type="button"
+          class="inline-flex items-center p-2 ml-1 dark:hover:text-blue-800 text-sm text-black-500 rounded-lg lg:hidden hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-gray-200 px-4 py-4 mr-3 dark:text-black-400 dark:hover:bg-blue-100"
+          aria-controls="navbar-dropdown" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- dropdown menu -->
+  <div id="navbar-dropdown"
+    class="lg:hidden hidden font-montserrat bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-white dark:divide-gray-600 absolute right-0"
+    style="float: right; z-index: 10">
+    <ul class="py-2 text-sm text-black-700 dark:text-black" aria-labelledby="dropdownLargeButton">
+      <li>
+        <a routerLink="/dashboard"
+          class="block px-4 py-2 hover:bg-blue-100 dark:hover:bg-blue-100 dark:hover:text-blue-800">Dashboard</a>
+      </li>
+      <li>
+        <a routerLink="/cars"
+          class="block px-4 py-2 hover:bg-blue-100 dark:hover:bg-blue-100 dark:hover:text-blue-800">Cars</a>
+      </li>
+      <li *ngIf="isAdmin">
+        <a routerLink="/users/list"
+          class="block px-4 py-2 hover:bg-blue-100 dark:hover:bg-blue-100 dark:hover:text-blue-800">User</a>
+      </li>
+      <li>
+        <a routerLink="/history"
+          class="block px-4 py-2 hover:bg-blue-100 dark:hover:bg-blue-100 dark:hover:text-blue-800">History</a>
+      </li>
+    </ul>
+    <div class="py-1">
+      <a routerLink="/users/profile"
+        class="block px-4 py-2 hover:bg-red-100 dark:hover:bg-red-100 dark:hover:text-red-800">Sign
+        out</a>
+    </div>
+  </div>
+</header>

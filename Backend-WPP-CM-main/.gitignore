@@ -1,0 +1,40 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+
+# Local History for Visual Studio
+/.vs/*.vshistory
+/.vs/ProjectSettings.json
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Local history for Rider
+.idea/
+*.sln.iml
+
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/

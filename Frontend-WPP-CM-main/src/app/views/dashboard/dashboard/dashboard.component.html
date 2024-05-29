@@ -1,0 +1,174 @@
+<div class="flex flex-col">
+  <!-- Main Content Area -->
+
+  <main class="flex flex-col lg:flex-row gap-10 p-4 lg:p-8 mt-7">
+    <!-- Reservations Box -->
+    <div class="w-full lg:w-1/3 flex flex-col ">
+      <div class="border-2 rounded-xl p-4 bg-white overflow-y-auto max-h-[600px]  shadow-md">
+        <h3 class="text-xl font-semibold mb-4 lg:mb-4 text-center">Your Reservations</h3>
+        <ul class="divide-x divide-gray-300">
+          <div *ngFor="let reservation of upcomingReservations">
+            <div class="p-4 bg-white-100 border-2 shadow-md rounded-md mb-4">
+              <div class="bg-white-100 relative">
+                <div class="absolute top-0 right-0">
+                  <span class="bg-blue-600 border-2 border-black border-r-0 text-xs px-1.5 py-0.5 rounded-l">
+                  </span>
+                  <span
+                    class="bg-yellow-300 border-2 border-black border-l-0 text-black text-xs font-bold uppercase px-2.5 py-0.5 rounded-r">{{
+                    reservation.car.licensePlate }}</span>
+                </div>
+              </div>
+
+              <h2 class="font-bold">{{ reservation?.destination }}</h2>
+              <h2>Seats: {{reservation?.seats}} </h2>
+
+              <h2>
+                {{ reservation?.departureDate | date : "dd-MM-YYYY HH:mm" }} - {{ reservation?.arrivalDate | date :
+                "dd-MM-YYYY HH:mm" }}
+              </h2>
+
+
+
+              <!-- TODO -->
+              <hr class="my-2 border-gray-300" />
+              <ul class="flex">
+                <li *ngFor="let requestIncoming of incomingRequests">
+                  <div
+                    *ngIf="requestIncoming.reservation.id === reservation.id && requestIncoming.status === 'ACCEPTED'"
+                    class="mr-4">{{requestIncoming.user.name}}</div>
+                </li>
+              </ul>
+              <hr class="my-2 border-gray-300" />
+              <button
+                class="bg-red-600 text-white px-4 py-2 mt-4 rounded-md transition duration-300 transform hover:scale-105"
+                (click)="confirmDelete(reservation)">
+                Cancel Reservation
+              </button>
+
+
+            </div>
+          </div>
+        </ul>
+        <ul *ngIf="upcomingReservations?.length === 0">
+          <li>No reservations found.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- User and Other Info Boxes -->
+    <div class="w-full lg:w-1/3 flex flex-col mt-4 lg:mt-0">
+      <div class="border-2 rounded-xl pt-4 pl-4 pr-4 bg-white flex flex-col items-center mb-4 h-40  shadow-md">
+        <img src="../../../../assets/images/CMCarManagement.png" alt="Image"
+          class="w-24 h-24 rounded-full border-4 border-blue-300 mb-4 -translate-y-1/2 absolute" />
+        <div class="p-4 w-full bg-white-100 border-2 shadow-md rounded-md mt-10 mb-12">
+          <p>{{ user?.name }} [{{user?.employeeNr}}]</p>
+          <p>{{ user?.emailAddress }}</p>
+        </div>
+      </div>
+
+      <!-- Other Info Box beneath User Info -->
+      <div class="border-2 rounded-xl p-4 bg-white overflow-y-auto max-h-[425px] shadow-md">
+        <h3 class="text-xl font-semibold mb-4 text-center">Incoming Requests</h3>
+
+
+        <ul>
+          <li *ngFor="let incRequest of incomingRequests">
+            <div *ngIf="incRequest.status === 'PENDING'">
+              <div class="relative p-4 bg-white-100 border-2 shadow-md rounded-md mb-4">
+                <div class="bg-white-100 relative">
+                  <div class="absolute top-0 right-0">
+                    <span class="bg-blue-600 border-2 border-black border-r-0 text-xs px-1.5 py-0.5 rounded-l">
+                    </span>
+                    <span
+                      class="bg-yellow-300 border-2 border-black border-l-0 text-black text-xs font-bold uppercase px-2.5 py-0.5 rounded-r">{{
+                      incRequest.reservation.car.licensePlate }}</span>
+                  </div>
+                </div>
+                <h2 class="font-bold">{{ incRequest.reservation.destination }}</h2>
+
+                <h2>{{ incRequest.user.name }} wants to ride along.</h2>
+                <h2>Seats Required: {{ incRequest.seats }}</h2>
+
+                <h2>{{ incRequest.reservation.departureDate | date : "dd-MM-YYYY HH:mm" }} -
+                  {{incRequest.reservation.arrivalDate | date : "dd-MM-YYYY HH:mm"}}</h2>
+
+                <hr class="my-2 border-gray-300" />
+
+                <div class="flex justify-between">
+                  <button
+                    class="bg-green-500 text-white px-4 py-2 rounded-md transition duration-300 transform hover:scale-105"
+                    (click)="acceptRequest(incRequest.id, incRequest.token)">Accept</button>
+                  <button
+                    class="bg-red-600 text-white px-4 py-2 rounded-md transition duration-300 transform hover:scale-105"
+                    (click)="rejectRequest(incRequest.id, incRequest.token)">Reject</button>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <ul *ngIf="!hasPendingRequests()">
+          <li>No incoming requests found.</li>
+        </ul>
+
+
+      </div>
+    </div>
+
+    <!-- REQUESTS -->
+    <div class=" w-full lg:w-1/3 flex flex-col mt-4 lg:mt-0 ">
+      <div class=" border-2 rounded-xl p-4 bg-white overflow-y-auto max-h-[600px] shadow-md ">
+        <h3 class=" text-xl font-semibold mb-4 lg:mb-4 text-center ">Your Requests</h3>
+        <ul>
+          <li *ngFor=" let request of requests; ">
+            <div class=" relative p-4 bg-white-100 border-2 shadow-md rounded-md mb-4 ">
+              <div *ngIf=" request.status==='DENIED' " class=" red-circle w-5 h-5 absolute bottom-4 right-4 inline-flex items-center justify-center
+          rounded-full bg-red-500 " title=" Denied ">
+              </div>
+              <div *ngIf=" request.status==='PENDING' " class=" yellow-circle w-5 h-5 absolute bottom-4 right-4 inline-flex items-center justify-center
+          rounded-full bg-yellow-500 " title=" Pending ">
+              </div>
+              <div *ngIf=" request.status==='ACCEPTED' " class=" green-circle w-5 h-5 absolute bottom-4 right-4 inline-flex items-center justify-center
+          rounded-full bg-green-500 " title=" Accepted ">
+              </div>
+
+
+              <div class=" bg-white-100 relative ">
+                <div class=" absolute top-0 right-0 ">
+                  <span class=" bg-blue-600 border-2 border-black border-r-0 text-xs px-1.5 py-0.5 rounded-l ">
+                  </span>
+                  <span class=" bg-yellow-300 border-2 border-black border-l-0 text-black text-xs font-bold uppercase
+          px-2.5 py-0.5 rounded-r ">{{
+                    request.reservation.car.licensePlate }}</span>
+                </div>
+              </div>
+              <h2 class=" font-bold ">{{ request.reservation.destination }}</h2>
+
+              <h2>Status: {{ request.status }} </h2>
+              <h2>Seats: {{ request.seats }}</h2>
+
+              <h2>{{ request.reservation.departureDate | date : " dd-MM-YYYY HH:mm "}} - {{
+                request.reservation.arrivalDate | date : " dd-MM-YYYY HH:mm " }}</h2>
+
+
+
+              <hr class=" my-2 border-gray-300 " />
+
+              <button *ngIf=" request.status==='DENIED' " class=" bg-red-600 text-white px-4 py-2 mt-4 rounded-md transition duration-300 transform
+          hover:scale-105 " (click)=" confirmDeleteRequest(request) ">
+                Remove
+              </button>
+              <button *ngIf=" request.status !=='DENIED' " class=" bg-red-600 text-white px-4 py-2 mt-4 rounded-md transition duration-300 transform
+          hover:scale-105 " (click)=" confirmDeleteRequest(request) ">
+                Cancel Request
+              </button>
+            </div>
+          </li>
+        </ul>
+        <ul *ngIf=" requests?.length===0 ">
+          <li>No requests found.</li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+</div>

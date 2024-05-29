@@ -1,0 +1,206 @@
+<div class="flex justify-center relative">
+  <div class="px-5 md:px-10 py-10 w-full">
+    <form
+      *ngIf="reservation && car"
+      #reservationForm="ngForm"
+      name="reservationForm"
+      (ngSubmit)="reservationForm.form.valid && onSubmit()"
+    >
+      <div>
+        <div class="flex justify-between">
+          <label for="startingTime">Starting time</label>
+          <input
+            type="datetime-local"
+            name="startingTime"
+            id="startingTime"
+            #startingTime="ngModel"
+            [ngModel]="reservation.departureDate | date : 'yyyy-MM-ddTHH:mm'"
+            (ngModelChange)="reservation.departureDate = $event"
+            required
+            [min]="currentDateTime | date : 'yyyy-MM-ddTHH:mm'"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-1.5"
+            [ngClass]="{
+              'border-red-600':
+                ((reservationForm.submitted || startingTime.touched) &&
+                  startingTime.invalid) ||
+                (invalidDate(reservation.departureDate) && startingTime.touched)
+            }"
+          />
+        </div>
+        <div
+          *ngIf="
+            ((reservationForm.submitted || startingTime.touched) &&
+              startingTime.invalid) ||
+            (invalidDate(reservation.departureDate) && startingTime.touched)
+          "
+          class="text-red-600"
+        >
+          <div *ngIf="startingTime.errors?.['required']">
+            Starting time is required
+          </div>
+          <div
+            *ngIf="
+              invalidDate(reservation.departureDate) && startingTime.touched
+            "
+          >
+            Starting time must be in the future
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-2">
+        <div class="flex justify-between">
+          <label for="endingTime">Ending time</label>
+          <input
+            type="datetime-local"
+            name="endingTime"
+            id="endingTime"
+            #endingTime="ngModel"
+            [ngModel]="reservation.arrivalDate | date : 'yyyy-MM-ddTHH:mm'"
+            (ngModelChange)="reservation.arrivalDate = $event"
+            required
+            [min]="currentDateTime | date : 'yyyy-MM-ddTHH:mm'"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-1.5"
+            [ngClass]="{
+              'border-red-600':
+                ((reservationForm.submitted || endingTime.touched) &&
+                  endingTime.invalid) ||
+                (invalidDate(reservation.arrivalDate) && endingTime.touched)
+            }"
+          />
+        </div>
+        <div
+          *ngIf="
+            ((reservationForm.submitted || endingTime.touched) &&
+              endingTime.invalid) ||
+            (invalidDate(reservation.arrivalDate) && endingTime.touched)
+          "
+          class="text-red-600"
+        >
+          <div *ngIf="endingTime.errors?.['required']">
+            Ending time is required
+          </div>
+          <div
+            *ngIf="invalidDate(reservation.arrivalDate) && endingTime.touched"
+          >
+            Ending time must be in the future
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-2">
+        <div class="flex justify-between">
+          <label for="destination">Destination</label>
+          <select
+            name="destination"
+            id="destination"
+            #destination="ngModel"
+            [(ngModel)]="reservation.destination"
+            required
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-1.5"
+            [ngClass]="{
+              'border-red-600':
+                (reservationForm.submitted || destination.touched) &&
+                destination.invalid
+            }"
+          >
+            <option value="undefined" disabled>Destination</option>
+            <option *ngFor="let d of destinations" [value]="d">
+              {{ destination2LabelMapping[d] }}
+            </option>
+          </select>
+        </div>
+        <div
+          *ngIf="
+            (reservationForm.submitted || destination.touched) &&
+            destination.invalid
+          "
+          class="text-red-600"
+        >
+          <div *ngIf="destination.errors?.['required']">
+            Destination is required
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="reservation.destination === 'other'" class="mt-2">
+        <div class="flex justify-between">
+          <label for="otherAddress">Address</label>
+          <input
+            type="text"
+            id="otherAddress"
+            name="otherAddress"
+            #otherAddress="ngModel"
+            [(ngModel)]="address"
+            required
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-1.5"
+            [ngClass]="{
+              'border-red-600':
+                (reservationForm.submitted || otherAddress.touched) &&
+                otherAddress.invalid
+            }"
+          />
+        </div>
+        <div
+          *ngIf="
+            (reservationForm.submitted || otherAddress.touched) &&
+            otherAddress.invalid
+          "
+          class="text-red-600"
+        >
+          <div *ngIf="otherAddress.errors?.['required']">
+            Address is required
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-2">
+        <div class="flex justify-between">
+          <label for="seats">Number of seats</label>
+          <input
+            type="number"
+            id="seats"
+            name="seats"
+            #seats="ngModel"
+            [(ngModel)]="reservation.seats"
+            required
+            min="1"
+            [max]="car!.seats"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-1.5"
+            [ngClass]="{
+              'border-red-600':
+                (reservationForm.submitted || seats.touched) && seats.invalid
+            }"
+          />
+        </div>
+        <div
+          *ngIf="(reservationForm.submitted || seats.touched) && seats.invalid"
+          class="text-red-600"
+        >
+          <div *ngIf="seats.errors?.['required']">
+            Number of seats is required
+          </div>
+          <div *ngIf="seats.errors?.['min']">
+            Number of seats must be at least 1
+          </div>
+          <div *ngIf="seats.errors?.['max']">
+            Number of seats must be lower than the available seats
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-16">
+        <button
+          type="submit"
+          class="absolute bottom-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          [disabled]="
+            invalidDate(reservation.departureDate) &&
+            invalidDate(reservation.arrivalDate)
+          "
+        >
+          Create reservation
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

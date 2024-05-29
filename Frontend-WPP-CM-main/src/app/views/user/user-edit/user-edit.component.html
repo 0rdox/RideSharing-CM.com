@@ -1,0 +1,115 @@
+<div class="lg:flex items-center justify-center lg:ml-80 lg:mr-80 lg:(m-80 mt-10 mb-20)">
+    <div class="w-full max-w-md">
+        <form #form="ngForm" class="bg-white shadow-md rounded-xl px-8 pt-6 pb-8 mb-10">
+            <p *ngIf="!isEditing" class="text-center text-2xl font-bold m-4">Create a User</p>
+            <p *ngIf="isEditing" class="text-center text-2xl font-bold m-4">Edit a User</p>
+            <hr class="mb-4">
+
+            <!-- Name field -->
+            <div class="lg:flex lg:space-x-3">
+                <div class="mb-4 w-full">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+                        Name
+                    </label>
+                    <input [(ngModel)]="CreateUserModel.name" #nameField="ngModel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                focus:outline-none focus:shadow-outline" id="name" name="name" type="text" placeholder="Sandro Dekkers"
+                        required />
+                    <div *ngIf="nameField.invalid && (nameField.dirty || nameField.touched)"
+                        class="text-red-500 text-xs">
+                        <span class="mt-1" *ngIf="nameField.errors && nameField.errors['required']">Name is
+                            required.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email address field -->
+            <div class="lg:flex lg:space-x-3">
+                <div class="mb-4 w-full">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="emailAddress">
+                        Email Address
+                    </label>
+                    <input [(ngModel)]="CreateUserModel.emailAddress" #emailField="ngModel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                        focus:outline-none focus:shadow-outline" id="emailAddress" name="emailAddress" type="email"
+                        placeholder="s.dekkers@cm.com" required
+                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" />
+                    <div *ngIf="emailField.invalid && (emailField.dirty || emailField.touched)"
+                        class="text-red-500 text-xs">
+                        <span class="mt-1" *ngIf="emailField.errors && emailField.errors['required']">Email Address is
+                            required.</span>
+                        <span class="mt-1" *ngIf="emailField.errors && emailField.errors['pattern']">Email Address is
+                            invalid.</span>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!isEditing" class="lg:flex lg:space-x-3">
+                <div class="mb-4 w-full">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                        Password
+                    </label>
+                    <input [(ngModel)]="CreateUserModel.password" #passwordField="ngModel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                focus:outline-none focus:shadow-outline" id="password" name="password" type="text"
+                        placeholder="Secret123!" required />
+                    <div *ngIf="passwordField.invalid && (passwordField.dirty || passwordField.touched)"
+                        class="text-red-500 text-xs">
+                        <span class="mt-1" *ngIf="passwordField.errors && passwordField.errors['required']">Password is
+                            required.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Employeenr, Driverlicense field -->
+
+            <div class="lg:flex lg:space-x-3">
+                <div class="mb-4 w-full">
+                    <label class="block text-gray-700 w-full text-sm font-bold mb-2" for="employeeNr">
+                        Employee Nr.
+                    </label>
+                    <input [(ngModel)]="CreateUserModel.employeeNr" #employeenrField="ngModel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                focus:outline-none focus:shadow-outline" id="employeeNr" name="employeeNr" type="text"
+                        placeholder="114903" required />
+                    <div *ngIf="employeenrField.dirty || employeenrField.touched" class="text-red-500 text-xs">
+                        <span class="mt-1" *ngIf="employeenrField.errors && employeenrField.errors['required']">Employee
+                            Nr. is
+                            required.</span>
+                    </div>
+                </div>
+                <div class="mb-4 lg:w-60">
+                    <span class="block text-gray-700 text-sm font-bold">Has Driverlicense</span>
+                    <label class="relative inline-flex items-center cursor-pointer mt-2">
+                        <input type="checkbox" [(ngModel)]="CreateUserModel.hasLicense" class="sr-only peer"
+                            id="isAvailable" name="isAvailable">
+                        <div
+                            class="w-11 h-6 bg-gray-200 rounded-full dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Role selection -->
+            <div *ngIf="!isEditing" class="lg:flex lg:space-x-3">
+                <div class="mb-4 w-full">
+                    <label class="block text-gray-700 w-full text-sm font-bold mb-2" for="roles">
+                        Role
+                    </label>
+                    <select [(ngModel)]="CreateUserModel.role" required #roleField="ngModel" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                    focus:outline-none focus:shadow-outline" id="role" name="role" type="text" placeholder="Role">
+                        <option *ngFor="let role of CreateUserModel.roles" [value]="role">{{ role }}
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button [disabled]="form.invalid" [class.bg-blue-500]="!form.invalid" [class.bg-gray-500]="form.invalid"
+                    [class.hover:bg-gray-500]="form.invalid" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none
+                    focus:shadow-outline" type="button" (click)="saveUser()">
+                    Save
+                </button>
+                <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+                    routerLink="/users/list">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+    </div>
+</div>

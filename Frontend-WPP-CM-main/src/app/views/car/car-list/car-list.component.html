@@ -1,0 +1,114 @@
+<!-- Filters -->
+<div class="py-2 px-5 border-b border-gray-300">
+  <div class="block md:hidden">
+    <div class="flex justify-end">
+      <button
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2"
+        (click)="toggleFilters()">
+        Filters
+      </button>
+    </div>
+  </div>
+
+  <div class="hidden md:block" id="filters">
+    <form #filterForm="ngForm" name="filterForm" (ngSubmit)="onSubmit()" novalidate>
+      <ul class="md:flex gap-10">
+        <!-- Filter on departure date, check if the car is available on the specific date and time -->
+        <li>
+          <div>
+            <label for="departureDate">Departure date: </label>
+            <input type="datetime-local" id="departureDate" name="departureDate"
+              [ngModel]="filters.departureDate | date : 'yyyy-MM-ddTHH:mm'"
+              (ngModelChange)="filters.departureDate = $event" #departureDate="ngModel" required
+              [min]="currentDateTime | date : 'yyyy-MM-ddTHH:mm'"
+              class="mt-2 md:mt-0 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-1.5"
+              [ngClass]="{
+                'border-red-600': departureDate.invalid && departureDate.touched
+              }" />
+          </div>
+        </li>
+
+        <!-- Filter on Location where the car is -->
+        <li>
+          <div>
+            <label for="location">From: </label>
+            <select name="location" id="location" [(ngModel)]="filters.location" #location="ngModel" required
+              class="mt-2 md:mt-0 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-1.5">
+              <option value="null" selected disabled>Location</option>
+              <option *ngFor="let location of destinations" [value]="location">{{ location }}
+            </select>
+          </div>
+        </li>
+
+        <!-- Filter on the number of seats -->
+        <li>
+          <div>
+            <label for="seats">Number of seats: </label>
+            <input type="number" name="seats" id="seats" [(ngModel)]="filters.seats" #seats="ngModel" required min="1"
+              class="mt-2 md:mt-0 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-12 p-1.5"
+              [ngClass]="{
+                'border-red-600': seats.invalid && seats.touched
+              }" />
+          </div>
+        </li>
+
+        <!-- Search button for the filters -->
+        <li>
+          <button type="submit"
+            class="mt-2 md:mt-0 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-2xl focus:ring-blue-500 focus:border-blue-500 px-2.5 py-1.5">
+            <i class="fa-solid fa-magnifying-glass"></i> Search
+          </button>
+        </li>
+
+        <!-- Reset button for filters -->
+        <li>
+          <button type="button"
+            class="mt-2 md:mt-0 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-2xl focus:ring-blue-500 focus:border-blue-500 px-2.5 py-1.5"
+            (click)="resetFilters()">
+            <i class="fa-solid fa-arrows-rotate"></i> Reset
+          </button>
+        </li>
+      </ul>
+    </form>
+  </div>
+</div>
+
+<!-- Car list -->
+<div class="p-5">
+  <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
+    <div *ngFor="let car of filteredCars || cars"
+      class="bg-white rounded-xl  border-2 transition duration-300 transform hover:scale-105 overflow-hidden">
+      <a routerLink="{{ car.id }}">
+        <img [src]="car.imageUrl" alt="Foto van de bedrijfsauto"
+          class="rounded-t object-cover h-60 w-full border-b-2" />
+
+        <div class="p-2">
+          <div class="flex justify-between">
+            <h3 class="text-lg font-bold">{{ car.brand }} {{ car.model }}</h3>
+
+            <div>
+              <span class="bg-blue-600 border-2 border-black border-r-0 text-xs px-1.5 py-0.5 rounded-l">
+              </span>
+              <span
+                class="bg-yellow-300 border-2 border-black border-l-0 text-black text-xs font-bold uppercase me-2 px-2.5 py-0.5 rounded-r">{{
+                car.licensePlate }}</span>
+            </div>
+          </div>
+
+          <ul>
+            <li>{{ car.seats }} Seats</li>
+            <li>{{car.location}}</li>
+          </ul>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="flex justify-end m-4" *ngIf="isAdmin">
+
+  <a routerLink="/cars/create">
+    <i class="fa-solid fa-circle-plus text-7xl text-blue-600 fixed lg:bottom-8 right-8 sm:bottom-10 transition duration hover:text-blue-700 transform hover:scale-110 cursor-pointer"
+      title="Create Car"></i>
+  </a>
+</div>

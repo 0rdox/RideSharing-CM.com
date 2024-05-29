@@ -1,0 +1,29 @@
+<a *ngFor=" let user of users ">
+  <div class=" user-item bg-white rounded-xl shadow-lg p-6 ml-10 mr-10 mb-4 mt-4 bg-gray-100 transition duration-300
+  transform hover:scale-100 ">
+    <h2 class="text-xl font-bold">
+      {{ user.name }}
+      <span class="hidden lg:inline">[{{ user.employeeNr }}]</span>
+    </h2>
+    <p class="text-gray-600 sm:hidden">[{{ user.employeeNr }}]</p>
+    <p class="text-gray-600">{{ user.emailAddress }}</p>
+
+    <div class=" absolute top-0 right-0 rounded-full px-3 py-1 m-3 text-sm font-semibold text-white {{ user?.hasLicense
+  ? 'bg-blue-600' : 'bg-red-600' }} ">
+      {{ user?.hasLicense ? " Has a License " : " Doesn 't Have a License" }}
+    </div>
+
+    <!-- buttons -->
+    <div class="fixed bottom-4 right-4 space-x-4">
+      <a class="fa-solid fa-pen-to-square text-2xl transition duration-300 hover:text-blue-600 transform hover:scale-110 cursor-pointer"
+        title="Edit" (click)="onEdit(user.id)"></a>
+      <a class="fa-solid fa-trash text-2xl transition duration-300 transform hover:text-red-500 hover:scale-110 cursor-pointer"
+        title="Delete" (click)="onDelete(user.id)"></a>
+    </div>
+  </div>
+</a>
+
+<a routerLink="/users/create">
+  <i class="fa-solid fa-circle-plus text-7xl text-blue-600  fixed lg:bottom-8 right-8 sm:bottom-10 transition duration hover:text-blue-700 transform hover:scale-110 cursor-pointer"
+    title="Create User"></i>
+</a>
